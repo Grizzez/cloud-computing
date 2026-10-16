@@ -18,10 +18,11 @@ requirements.txt    de pakketten die ze nodig heeft
 templates/          de HTML van de webpagina
 ```
 
-## Wat er bewust niet in zit
+## Docker en Compose
 
-Geen Dockerfile en geen compose-bestand. Die schrijf je zelf, dat is precies
-wat je in dit vak leert.
+De Dockerfile bouwt een image van de applicatie.
+Het compose.yaml-bestand start de applicatie samen met PostgreSQL.
+De omgevingsvariabelen worden ingesteld via het .env-bestand.
 
 ---
 
@@ -95,3 +96,60 @@ Je begint dus nooit opnieuw. Elke opdracht bouwt verder op de vorige.
 Je hebt hem gemaakt vanaf het sjabloon, dus dit is jouw kopie. Werk erin, commit
 elke les, en push. Indienen doe je met de link naar een commit. Hoe dat precies
 gaat, staat in de opdrachtbundel op Toledo.
+
+## Applicatie starten
+
+Om de applicatie te starten, moet Docker Desktop geïnstalleerd zijn en draaien.
+
+### 1. Repository downloaden
+
+```powershell
+git clone https://github.com/Grizzez/cloud-computing.git
+cd cloud-computing
+```
+
+### 2. `.env` aanmaken
+
+Maak een kopie van `.env.example`:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Open het `.env`-bestand en vul de gegevens in voor de PostgreSQL-database. Dit bestand wordt niet mee naar GitHub gepusht.
+
+### 3. Applicatie starten
+
+Start de applicatie en de database met:
+
+```powershell
+docker compose up -d --build
+```
+
+### 4. Controleren
+
+Met dit commando kan je zien of beide containers draaien:
+
+```powershell
+docker compose ps
+```
+
+Ga daarna naar [http://localhost:8000](http://localhost:8000) om de applicatie te openen.
+
+Je kan ook controleren of alles werkt met:
+
+```powershell
+curl.exe http://localhost:8000/health
+```
+
+Als alles goed werkt, krijg je `status: ok` en zie je dat PostgreSQL gebruikt wordt.
+
+### 5. Applicatie stoppen
+
+Om de applicatie te stoppen, gebruik je:
+
+```powershell
+docker compose down
+```
+
+De databasegegevens blijven bewaard in het volume. Gebruik dus niet `docker compose down -v` als je die gegevens wilt behouden.

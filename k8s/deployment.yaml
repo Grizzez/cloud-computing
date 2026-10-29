@@ -17,3 +17,6 @@ spec:
           image: ghcr.io/grizzez/storingsmelder:1.1
           ports:
             - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://storingsmelder:testpassword@db:5432/storingsmelder"
